@@ -21,6 +21,10 @@
           ref="password"
         ></hm-input>
       </template>
+      <template v-slot:daohan>
+        没有账号?去
+        <router-link to="register">注册</router-link>
+      </template>
     </hm-entrance>
   </div>
 </template>
@@ -32,6 +36,10 @@ export default {
       username: "",
       password: ""
     };
+  },
+  created() {
+    this.username = this.$route.params.username;
+    this.password = this.$route.params.password;
   },
   methods: {
     login() {

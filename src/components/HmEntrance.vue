@@ -9,6 +9,9 @@
     <div class="button" @click="login">
       <slot name="button"></slot>
     </div>
+    <div class="daohan">
+      <slot name="daohan"></slot>
+    </div>
   </div>
 </template>
 
@@ -37,7 +40,7 @@ export default {
     }
   }
   .text {
-    padding: 0 16px;
+    padding: 0 20px;
   }
   .button {
     margin: 20px;
@@ -49,6 +52,13 @@ export default {
     color: #fff;
     font-size: 20px;
     border-radius: 25px;
+  }
+  .daohan {
+    text-align: right;
+    margin-right: 20px;
+    a {
+      color: gold;
+    }
   }
 }
 </style>

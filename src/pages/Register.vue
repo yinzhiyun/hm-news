@@ -9,6 +9,7 @@
           v-model="username"
           :regexp="/^1\d{4,10}$/"
           message="用户名格式错误"
+          ref="username"
         ></hm-input>
         <hm-input
           type="text"
@@ -16,6 +17,7 @@
           v-model="nickname"
           :regexp="/^[a-zA-Z\u4e00-\u9fa5]{2,8}$/"
           message="昵称格式错误"
+          ref="nickname"
         ></hm-input>
         <hm-input
           type="password"
@@ -23,9 +25,14 @@
           v-model="password"
           :regexp="/^\d{3,12}$/"
           message="密码格式错误"
+          ref="password"
         ></hm-input>
       </template>
       <template v-slot:button>注册</template>
+      <template v-slot:daohan>
+        已有账号?去
+        <router-link to="login">登录</router-link>
+      </template>
     </hm-entrance>
   </div>
 </template>
@@ -41,13 +48,10 @@ export default {
   },
   methods: {
     register() {
-      if (!this.username) {
-        return;
-      }
-      if (!this.nickname) {
-        return;
-      }
-      if (!this.password) {
+      let isusername = this.$refs.username.vlidete(this.username);
+      let isnickname = this.$refs.nickname.vlidete(this.nickname);
+      let ispassword = this.$refs.password.vlidete(this.password);
+      if (!isusername || !isnickname || !ispassword) {
         return;
       }
       this.$axios({
@@ -60,9 +64,16 @@ export default {
         }
       }).then(res => {
         if (res.data.statusCode === 200) {
-          this.$router.push("/login");
+          this.$toast.success(res.data.message);
+          this.$router.push({
+            name: "login",
+            params: {
+              username: this.username,
+              password: this.password
+            }
+          });
         } else {
-          alert(res.data.message);
+          this.$toast.fail(res.data.message);
         }
       });
     }
