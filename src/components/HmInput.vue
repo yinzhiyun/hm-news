@@ -30,13 +30,17 @@ export default {
   methods: {
     input(e) {
       let value = e.target.value;
-
+      this.$emit("input", value);
+      this.vlidete(value);
+    },
+    vlidete(value) {
       if (this.regexp) {
         if (this.regexp.test(value)) {
           this.status = false;
-          this.$emit("input", value);
+          return true;
         } else {
           this.status = true;
+          return false;
         }
       }
     }

@@ -10,10 +10,9 @@ import "./styles/iconfont.css";
 //导入axios发送请求
 import axios from "axios";
 //导入vant组件库
-import Vant from "vant";
-import "../node_modules/vant/lib/index.css";
+import { Toast } from "vant";
 
-Vue.use(Vant);
+Vue.use(Toast);
 
 axios.defaults.baseURL = "http://localhost:3000";
 Vue.prototype.$axios = axios;

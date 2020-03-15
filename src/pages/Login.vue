@@ -10,6 +10,7 @@
           v-model="username"
           :regexp="/^1\d{4,10}$/"
           message="用户名格式错误"
+          ref="username"
         ></hm-input>
         <hm-input
           type="password"
@@ -17,6 +18,7 @@
           v-model="password"
           :regexp="/^\d{3,12}$/"
           message="密码格式错误"
+          ref="password"
         ></hm-input>
       </template>
     </hm-entrance>
@@ -33,25 +35,26 @@ export default {
   },
   methods: {
     login() {
-      if (!this.username || !this.password) {
-        Toast("您的用户名或密码不能为空");
-      } else {
-        this.$axios({
-          url: "/login",
-          method: "post",
-          data: {
-            username: this.username,
-            password: this.password
-          }
-        }).then(res => {
-          if (res.data.statusCode === 200) {
-            Toast.success(res.data.message);
-            this.$router.push("/user");
-          } else {
-            Toast.fail(res.data.message);
-          }
-        });
+      let isusername = this.$refs.username.vlidete(this.username);
+      let ispassword = this.$refs.password.vlidete(this.password);
+      if (!isusername || !ispassword) {
+        return;
       }
+      this.$axios({
+        url: "/login",
+        method: "post",
+        data: {
+          username: this.username,
+          password: this.password
+        }
+      }).then(res => {
+        if (res.data.statusCode === 200) {
+          this.$toast.success(res.data.message);
+          this.$router.push("/user");
+        } else {
+          this.$toast.fail(res.data.message);
+        }
+      });
     }
   }
 };
