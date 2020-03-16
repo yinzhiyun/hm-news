@@ -57,7 +57,7 @@ export default {
     text-align: right;
     margin-right: 20px;
     a {
-      color: gold;
+      color: rgba(85, 26, 139);
     }
   }
 }

@@ -58,6 +58,7 @@ export default {
       }).then(res => {
         if (res.data.statusCode === 200) {
           this.$toast.success(res.data.message);
+          console.log(res);
           this.$router.push("/user");
         } else {
           this.$toast.fail(res.data.message);

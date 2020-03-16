@@ -11,9 +11,9 @@ import "./styles/iconfont.css";
 import axios from "axios";
 //导入vant组件库
 import { Toast } from "vant";
-
 Vue.use(Toast);
 
+//配置axios参数
 axios.defaults.baseURL = "http://localhost:3000";
 Vue.prototype.$axios = axios;
 
@@ -21,10 +21,12 @@ Vue.prototype.$axios = axios;
 import HmHeader from "./components/HmHeader.vue";
 import HmEntrance from "./components/HmEntrance.vue";
 import HmInput from "./components/HmInput.vue";
+import Navbar from "./components/Navbar.vue";
 //注册全局组件
 Vue.component("hm-header", HmHeader);
 Vue.component("hm-entrance", HmEntrance);
 Vue.component("hm-input", HmInput);
+Vue.component("hm-navbar", Navbar);
 
 Vue.config.productionTip = false;
 
