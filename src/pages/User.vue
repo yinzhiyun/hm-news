@@ -1,32 +1,70 @@
 <template>
   <div class="user">
     <hm-header>个人中心</hm-header>
-    <router-link to="/editUser">
-      <div class="info">
-        <div class="left">
-          <img src="../../public/images/1.jpg" alt>
-        </div>
-        <div class="center">
-          <span class="iconfont iconxingbienan"></span>
-          <span class="nickname">火星网友</span>
-          <p class="time">2019-02-22</p>
-        </div>
-        <div class="right">
-          <span class="iconfont iconjiantou1"></span>
-        </div>
+    <div class="info" @click="$router.push('/editUser')">
+      <div class="left">
+        <img :src="getimgUrl" alt>
       </div>
-    </router-link>
-    <hm-navbar title="我的关注" content="关注的用户"></hm-navbar>
+      <div class="center">
+        <span v-if="info.gender===1" class="iconfont iconxingbienan"></span>
+        <span v-else class="iconfont iconxingbienv"></span>
+        <span class="nickname">{{info.nickname}}</span>
+        <p class="time">{{info.create_date | date}}</p>
+      </div>
+      <div class="right">
+        <span class="iconfont iconjiantou1"></span>
+      </div>
+    </div>
+    <hm-navbar title="我的关注" content="关注的用户" @click="$router.push('/Myconcern')"></hm-navbar>
     <hm-navbar title="我的跟帖" content="跟帖/回复"></hm-navbar>
     <hm-navbar title="我的收藏" content="文章/视频"></hm-navbar>
-    <router-link to="/editUser">
-      <hm-navbar title="设置"></hm-navbar>
-    </router-link>
+    <hm-navbar title="设置" @click="$router.push('/editUser')"></hm-navbar>
+    <hm-navbar title="退出" @click="logout"></hm-navbar>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      info: {}
+    };
+  },
+  created() {
+    let userId = localStorage.getItem("userId");
+    let token = localStorage.getItem("token");
+    this.$axios({
+      url: `/user/${userId}`,
+      method: "get",
+      headers: { Authorization: token }
+    }).then(res => {
+      this.info = res.data.data;
+    });
+  },
+  methods: {
+    logout() {
+      this.$dialog
+        .confirm({
+          title: "温馨提示",
+          message: "确认要退出吗?"
+        })
+        .then(() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("userId");
+          this.$toast.success("退出成功");
+          this.$router.push("/login");
+        })
+        .catch(() => {
+          this.$toast("操作取消");
+        });
+    }
+  },
+  computed: {
+    getimgUrl() {
+      return this.$axios.defaults.baseURL + this.info.head_img;
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>
@@ -50,6 +88,9 @@ export default {};
     font-size: 16px;
     .iconxingbienan {
       color: lightskyblue;
+    }
+    .iconxingbienv {
+      color: pink;
     }
     .nickname {
       margin-left: 5px;

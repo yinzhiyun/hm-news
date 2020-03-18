@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar">
+  <div class="navbar" @click="clickfn">
     <div class="left">{{title}}</div>
     <div class="center">{{getContent}}</div>
     <div class="right">
@@ -17,13 +17,17 @@ export default {
     },
     content: String
   },
+  methods: {
+    clickfn() {
+      this.$emit("click");
+    }
+  },
   computed: {
     getContent() {
       if (!parseInt(this.content)) {
-        //return this.content.replace("", "*");
         return this.content;
       } else {
-        return "******";
+        return this.content.replace(/./g,"*");
       }
     }
   }
