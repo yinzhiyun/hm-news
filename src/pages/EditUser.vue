@@ -33,6 +33,25 @@
         </van-cell-group>
       </van-radio-group>
     </van-dialog>
+    <div class="corpper" v-show="showcorpper">
+      <vueCropper
+        ref="cropper"
+        :img="img"
+        :autoCrop="true"
+        :autoCropWidth="150"
+        :autoCropHeight="150"
+        :centerBox="true"
+        :canMoveBox="false"
+        :fixedBox="true"
+      ></vueCropper>
+      <div class="chekcorpper">
+        <div class="left" @click="showcorpper=false">
+          <span class="iconfont iconicon-test"></span>
+        </div>
+        <div class="center">裁剪</div>
+        <div class="right" @click="clope">√</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -46,23 +65,24 @@ export default {
       show1: false,
       password: "",
       show2: false,
-      gender: 1
+      gender: 1,
+      showcorpper: false,
+      img: "../../public/images/1.jpg"
     };
   },
   created() {
     this.getInfo();
   },
   methods: {
-    getInfo() {
+    async getInfo() {
       let userId = localStorage.getItem("userId");
-      this.$axios({
+      const res = await this.$axios({
         url: `/user/${userId}`,
         method: "get"
-      }).then(res => {
-        this.info = res.data.data;
       });
+      this.info = res.data.data;
     },
-    editUser(data) {
+    async editUser(data) {
       let userId = localStorage.getItem("userId");
       let token = localStorage.getItem("token");
       this.$toast.loading({
@@ -70,20 +90,19 @@ export default {
         forbidClick: true,
         message: "保存中..."
       });
-      this.$axios({
+      const res = await this.$axios({
         url: `/user_update/${userId}`,
         method: "post",
         headers: {
           Authorization: token
         },
         data: data
-      }).then(res => {
-        const { statusCode, message } = res.data;
-        if (statusCode === 200) {
-          this.$toast.success(message);
-          this.getInfo();
-        }
       });
+      const { statusCode, message } = res.data;
+      if (statusCode === 200) {
+        this.$toast.success(message);
+        this.getInfo();
+      }
     },
     shownickname() {
       this.show = true;
@@ -114,28 +133,33 @@ export default {
     },
     //编辑图片
     afterRead(file) {
-      if (file.file.size / 1024 >= 200) {
-        this.$toast.fail("图片大小不能超过200kb");
-        return;
-      }
-      this.$toast.loading({
-        duration: 0,
-        forbidClick: true,
-        message: "加载中..."
-      });
-      let fd = new FormData();
-      fd.append("file", file.file);
-      this.$axios({
-        url: "/upload",
-        method: "post",
-        data: fd
-      }).then(res => {
-        const { data, statusCode } = res.data;
-        if (statusCode === 200) {
-          this.editUser({
-            head_img: data.url
-          });
-        }
+      this.showcorpper = true;
+      this.img = file.content;
+    },
+    clope() {
+      // 获取截图的blob数据
+      this.$refs.cropper.getCropBlob(data => {
+        this.$toast.loading({
+          duration: 0,
+          forbidClick: true,
+          message: "上传中..."
+        });
+        let fd = new FormData();
+        fd.append("file", data);
+        this.$axios({
+          url: "/upload",
+          method: "post",
+          data: fd
+        }).then(res => {
+          const { data, statusCode } = res.data;
+          if (statusCode === 200) {
+            this.editUser({
+              head_img: data.url
+            });
+            this.showcorpper = false;
+            this.img = "";
+          }
+        });
       });
     }
   },
@@ -179,6 +203,37 @@ export default {
   .van-cell-group {
     border: 1px solid #ccc;
     margin: 20px;
+  }
+  .corpper {
+    height: 100%;
+    position: relative;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    .chekcorpper {
+      background-color: #000;
+      color: #fff;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      text-align: center;
+      .left {
+        width: 40px;
+      }
+      .right {
+        width: 40px;
+      }
+      .center {
+        flex: 1;
+      }
+    }
   }
 }
 </style>

@@ -58,7 +58,7 @@ export default {
       }).then(res => {
         if (res.data.statusCode === 200) {
           const { data } = res.data;
-          console.log(data);
+          //console.log(data);
           this.$toast.success(res.data.message);
           localStorage.setItem("token", data.token);
           localStorage.setItem("userId", data.user.id);

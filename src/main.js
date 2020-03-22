@@ -19,7 +19,8 @@ import {
   Cell,
   Radio,
   RadioGroup,
-  Uploader
+  Uploader,
+  List
 } from "vant";
 Vue.use(Toast);
 Vue.use(Dialog);
@@ -30,6 +31,11 @@ Vue.use(CellGroup);
 Vue.use(Radio);
 Vue.use(RadioGroup);
 Vue.use(Uploader);
+Vue.use(List);
+
+//配置vue cropper
+import VueCropper from "vue-cropper";
+Vue.use(VueCropper);
 
 //配置axios参数
 axios.defaults.baseURL = "http://localhost:3000";
@@ -66,8 +72,8 @@ Vue.component("hm-navbar", Navbar);
 
 //注册全局过滤器
 import moment from "moment";
-Vue.filter("date", input => {
-  return moment(input).format("YYYY-MM-DD");
+Vue.filter("date", function(input, format = "YYYY-MM-DD") {
+  return moment(input).format(format);
 });
 
 Vue.config.productionTip = false;

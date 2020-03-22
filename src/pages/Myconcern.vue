@@ -2,40 +2,16 @@
   <div class="concern">
     <hm-header>我的关注</hm-header>
     <ul class="concern-list">
-      <li>
+      <li v-for="item in concern" :key="item.id">
         <div class="left">
-          <img src="../../public/images/1.jpg" alt>
+          <img :src="$axios.defaults.baseURL+item.head_img" alt>
         </div>
         <div class="center">
-          <span class="nickname">火星新闻播报</span>
-          <p class="time">2019-10-22</p>
+          <span class="nickname">{{item.nickname}}</span>
+          <p class="time">{{item.create_date | date}}</p>
         </div>
         <div class="right">
-          <van-button round type="info">取消关注</van-button>
-        </div>
-      </li>
-      <li>
-        <div class="left">
-          <img src="../../public/images/1.jpg" alt>
-        </div>
-        <div class="center">
-          <span class="nickname">火星新闻播报</span>
-          <p class="time">2019-10-22</p>
-        </div>
-        <div class="right">
-          <van-button round type="info">取消关注</van-button>
-        </div>
-      </li>
-      <li>
-        <div class="left">
-          <img src="../../public/images/1.jpg" alt>
-        </div>
-        <div class="center">
-          <span class="nickname">火星新闻播报</span>
-          <p class="time">2019-10-22</p>
-        </div>
-        <div class="right">
-          <van-button round type="info">取消关注</van-button>
+          <van-button round type="info" @click="editconcern(item.id)">取消关注</van-button>
         </div>
       </li>
     </ul>
@@ -43,7 +19,43 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      concern: []
+    };
+  },
+  created() {
+    this.getUser_list();
+  },
+  methods: {
+    async getUser_list() {
+      const res = await this.$axios({
+        url: "/user_follows",
+        method: "get"
+      });
+      this.concern = res.data.data;
+    },
+    async editconcern(id) {
+      try {
+        await this.$dialog.confirm({
+          title: "温馨提示",
+          message: "确认要取消关注吗?"
+        });
+        const res = await this.$axios({
+          url: `/user_unfollow/${id}`,
+          method: "get"
+        });
+        if (res.data.statusCode === 200) {
+          this.$toast.success(res.data.message);
+          this.getUser_list();
+        }
+      } catch {
+        this.$toast("操作取消");
+      }
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>

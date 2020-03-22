@@ -5,6 +5,8 @@ import Register from "../pages/Register.vue";
 import User from "../pages/User.vue";
 import EditUser from "../pages/EditUser.vue";
 import Myconcern from "../pages/Myconcern.vue";
+import Mycomments from "../pages/Mycomments.vue";
+import Mycollection from "../pages/Mycollection.vue";
 
 Vue.use(VueRouter);
 
@@ -38,13 +40,29 @@ const router = new VueRouter({
       path: "/Myconcern",
       component: Myconcern,
       name: "myConcern"
+    },
+    {
+      path: "/Mycomments",
+      component: Mycomments,
+      name: "myComments"
+    },
+    {
+      path: "/Mycollection",
+      component: Mycollection,
+      name: "myCollection"
     }
   ]
 });
-
+//配置路由守卫
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
-  const pachUrl = ["/user", "/editUser", "/Myconcern"];
+  const pachUrl = [
+    "/user",
+    "/editUser",
+    "/Myconcern",
+    "/Mycomment",
+    "/Mycollection"
+  ];
   if (pachUrl.includes(to.path)) {
     if (token) {
       next();
