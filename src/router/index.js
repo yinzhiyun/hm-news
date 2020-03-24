@@ -7,6 +7,7 @@ import EditUser from "../pages/EditUser.vue";
 import Myconcern from "../pages/Myconcern.vue";
 import Mycomments from "../pages/Mycomments.vue";
 import Mycollection from "../pages/Mycollection.vue";
+import Home from "../pages/Home.vue";
 
 Vue.use(VueRouter);
 
@@ -14,7 +15,8 @@ const router = new VueRouter({
   routes: [
     {
       path: "/",
-      redirect: "/login"
+      component: Home,
+      name: "home"
     },
     {
       path: "/login",
@@ -67,7 +69,7 @@ router.beforeEach((to, from, next) => {
     if (token) {
       next();
     } else {
-      next("/login");
+      router.push("/login");
     }
   } else {
     next();

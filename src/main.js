@@ -20,7 +20,9 @@ import {
   Radio,
   RadioGroup,
   Uploader,
-  List
+  List,
+  Tab,
+  Tabs
 } from "vant";
 Vue.use(Toast);
 Vue.use(Dialog);
@@ -32,6 +34,8 @@ Vue.use(Radio);
 Vue.use(RadioGroup);
 Vue.use(Uploader);
 Vue.use(List);
+Vue.use(Tab);
+Vue.use(Tabs);
 
 //配置vue cropper
 import VueCropper from "vue-cropper";
@@ -64,11 +68,13 @@ import HmHeader from "./components/HmHeader.vue";
 import HmEntrance from "./components/HmEntrance.vue";
 import HmInput from "./components/HmInput.vue";
 import Navbar from "./components/Navbar.vue";
+import HmPost from "./components/HmPost.vue";
 //注册全局组件
 Vue.component("hm-header", HmHeader);
 Vue.component("hm-entrance", HmEntrance);
 Vue.component("hm-input", HmInput);
 Vue.component("hm-navbar", Navbar);
+Vue.component("hm-post", HmPost);
 
 //注册全局过滤器
 import moment from "moment";
