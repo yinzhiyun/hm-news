@@ -4,7 +4,7 @@
       <div class="left">
         <span class="iconfont iconnew"></span>
       </div>
-      <div class="center">
+      <div class="center" @click="$router.push('/Search')">
         <span class="iconfont iconsearch"></span>
         <span class="text">搜索新闻</span>
       </div>
@@ -31,6 +31,7 @@
 
 <script>
 export default {
+  name: "home",
   data() {
     return {
       active: 0,
@@ -43,6 +44,12 @@ export default {
     };
   },
   created() {
+    const column = localStorage.getItem("column");
+    if (column) {
+      this.tab_list = JSON.parse(column);
+      this.getpost_list(this.tab_list[this.active].id);
+      return;
+    }
     this.gettabList();
   },
   methods: {
@@ -66,6 +73,9 @@ export default {
           pageSize: this.pageSize
         }
       });
+      if (this.post_list.length > 0 && this.pageIndex === 1) {
+        this.post_list = [];
+      }
       const { data, statusCode } = res.data;
       if (statusCode === 200) {
         this.post_list = [...this.post_list, ...data];

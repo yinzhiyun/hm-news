@@ -1,7 +1,7 @@
 <template>
   <div class="hm-post">
     <!-- 视频 -->
-    <div class="video-article" v-if="post.type==2">
+    <div class="video-article" v-if="post.type==2" @click="$router.push(`/Details/${post.id}`)">
       <div class="title">{{post.title}}</div>
       <div class="video">
         <img :src="getUrl(post.cover[0].url)" alt>
@@ -15,7 +15,11 @@
       </div>
     </div>
     <!-- 单图片文章 -->
-    <div class="Single-article" v-else-if="post.cover.length<3">
+    <div
+      class="Single-article"
+      v-else-if="post.cover.length<3"
+      @click="$router.push(`/Details/${post.id}`)"
+    >
       <div class="info">
         <div class="title">{{post.title}}</div>
         <div class="xx">
@@ -28,7 +32,7 @@
       </div>
     </div>
     <!-- 多图片文章 -->
-    <div class="Many-article" v-else>
+    <div class="Many-article" v-else @click="$router.push(`/Details/${post.id}`)">
       <div class="title">{{post.title}}</div>
       <div class="img">
         <img :src="getUrl(post.cover[0].url)" alt>

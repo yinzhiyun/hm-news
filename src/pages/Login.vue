@@ -58,11 +58,15 @@ export default {
       }).then(res => {
         if (res.data.statusCode === 200) {
           const { data } = res.data;
-          //console.log(data);
           this.$toast.success(res.data.message);
           localStorage.setItem("token", data.token);
           localStorage.setItem("userId", data.user.id);
-          this.$router.push("/user");
+          if (sessionStorage.getItem("path")) {
+            this.$router.back();
+            sessionStorage.removeItem("path");
+          } else {
+            this.$router.push("/user");
+          }
         } else {
           this.$toast.fail(res.data.message);
         }

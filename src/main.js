@@ -57,9 +57,12 @@ axios.interceptors.response.use(function(res) {
 //配置请求拦截器
 axios.interceptors.request.use(function(req) {
   const token = localStorage.getItem("token");
-  req.headers = {
-    Authorization: token
-  };
+  if (token) {
+    req.headers = {
+      Authorization: token
+    };
+  }
+
   return req;
 });
 
@@ -69,17 +72,31 @@ import HmEntrance from "./components/HmEntrance.vue";
 import HmInput from "./components/HmInput.vue";
 import Navbar from "./components/Navbar.vue";
 import HmPost from "./components/HmPost.vue";
+import HmComment from "./components/HmComment.vue";
 //注册全局组件
 Vue.component("hm-header", HmHeader);
 Vue.component("hm-entrance", HmEntrance);
 Vue.component("hm-input", HmInput);
 Vue.component("hm-navbar", Navbar);
 Vue.component("hm-post", HmPost);
+Vue.component("hm-comment", HmComment);
 
 //注册全局过滤器
 import moment from "moment";
 Vue.filter("date", function(input, format = "YYYY-MM-DD") {
   return moment(input).format(format);
+});
+Vue.filter("date2", function(input) {
+  const him = new Date(input);
+  const now = new Date().getTime();
+  let time = ((now - him) / 1000 / 60 / 60) | 0;
+  if (time < 1) {
+    return "刚刚";
+  } else if (time < 24 && time > 1) {
+    return time + "小时前";
+  } else {
+    return moment(input).format("YYYY-MM-DD HH:mm");
+  }
 });
 
 Vue.config.productionTip = false;

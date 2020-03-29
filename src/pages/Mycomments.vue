@@ -16,7 +16,7 @@
           <div class="postcontent">{{item.parent.content}}</div>
         </div>
         <div class="content">{{item.content}}</div>
-        <div class="title">
+        <div class="title" @click="$router.push(`/Details/${item.post.id}`)">
           <div class="left one-txt-cut">原文：{{item.post.title}}</div>
           <div class="right">
             <span class="iconfont iconjiantou1"></span>

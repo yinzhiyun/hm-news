@@ -18,6 +18,7 @@
     <hm-navbar title="我的关注" content="关注的用户" @click="$router.push('/Myconcern')"></hm-navbar>
     <hm-navbar title="我的跟帖" content="跟帖/回复" @click="$router.push('/Mycomments')"></hm-navbar>
     <hm-navbar title="我的收藏" content="文章/视频" @click="$router.push('/Mycollection')"></hm-navbar>
+    <hm-navbar title="栏目管理" @click="$router.push('/Column')"></hm-navbar>
     <hm-navbar title="设置" @click="$router.push('/editUser')"></hm-navbar>
     <hm-navbar title="退出" @click="logout"></hm-navbar>
   </div>

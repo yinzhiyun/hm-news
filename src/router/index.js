@@ -1,13 +1,16 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Login from "../pages/Login.vue";
-import Register from "../pages/Register.vue";
-import User from "../pages/User.vue";
-import EditUser from "../pages/EditUser.vue";
-import Myconcern from "../pages/Myconcern.vue";
-import Mycomments from "../pages/Mycomments.vue";
-import Mycollection from "../pages/Mycollection.vue";
-import Home from "../pages/Home.vue";
+const Login = () => import("../pages/Login.vue");
+const Register = () => import("../pages/Register.vue");
+const User = () => import("../pages/User.vue");
+const EditUser = () => import("../pages/EditUser.vue");
+const Myconcern = () => import("../pages/Myconcern.vue");
+const Mycomments = () => import("../pages/Mycomments.vue");
+const Mycollection = () => import("../pages/Mycollection.vue");
+const Home = () => import("../pages/Home.vue");
+const Details = () => import("../pages/Details.vue");
+const Search = () => import("../pages/Search.vue");
+const Column = () => import("../pages/Column.vue");
 
 Vue.use(VueRouter);
 
@@ -52,6 +55,21 @@ const router = new VueRouter({
       path: "/Mycollection",
       component: Mycollection,
       name: "myCollection"
+    },
+    {
+      path: "/Details/:id",
+      component: Details,
+      name: "details"
+    },
+    {
+      path: "/Search",
+      component: Search,
+      name: "search"
+    },
+    {
+      path: "/Column",
+      component: Column,
+      name: "column"
     }
   ]
 });
