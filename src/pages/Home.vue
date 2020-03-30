@@ -14,16 +14,18 @@
     </div>
     <van-tabs v-model="active" sticky swipeable animated>
       <van-tab v-for="item in tab_list" :key="item.id" :title="item.name">
-        <van-list
-          v-model="loading"
-          :finished="finished"
-          finished-text="没有更多了"
-          @load="onLoad"
-          :immediate-check="false"
-          :offset="50"
-        >
-          <hm-post v-for="post in post_list" :key="post.id" :post="post"></hm-post>
-        </van-list>
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh" success-text="刷新成功">
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+            :immediate-check="false"
+            :offset="50"
+          >
+            <hm-post v-for="post in post_list" :key="post.id" :post="post"></hm-post>
+          </van-list>
+        </van-pull-refresh>
       </van-tab>
     </van-tabs>
   </div>
@@ -40,7 +42,8 @@ export default {
       pageIndex: 1,
       pageSize: 5,
       loading: false,
-      finished: false
+      finished: false,
+      refreshing: false
     };
   },
   created() {
@@ -83,6 +86,7 @@ export default {
           this.finished = true;
         }
         this.loading = false;
+        this.refreshing = false;
       }
     },
     //控制分页
@@ -91,6 +95,13 @@ export default {
       setTimeout(() => {
         this.getpost_list(this.tab_list[this.active].id);
       }, 1000);
+    },
+    //下拉加载
+    onRefresh() {
+      this.pageIndex = 0;
+      this.finished = false;
+      this.loading = true;
+      this.onLoad();
     }
   },
   watch: {

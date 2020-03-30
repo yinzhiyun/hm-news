@@ -64,6 +64,8 @@
 </template>
 
 <script>
+//导入lodash使用函数防抖功能
+import _ from "lodash";
 export default {
   data() {
     return {
@@ -104,12 +106,13 @@ export default {
         this.searchList = data;
       }
     },
-    //获取推荐数据
-    async getRecommend() {
+    //获取推荐数据(使用函数防抖)
+    getRecommend: _.debounce(async function() {
       if (!this.keyword) {
         this.recommendList = [];
         return;
       }
+      console.log(this.keyword);
       const res = await this.$axios.get("/post_search_recommend", {
         params: {
           keyword: this.keyword
@@ -119,7 +122,7 @@ export default {
       if (statusCode === 200) {
         this.recommendList = data;
       }
-    },
+    }, 500),
     //回退功能
     Regression() {
       if (this.keyword) {

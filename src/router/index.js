@@ -19,7 +19,10 @@ const router = new VueRouter({
     {
       path: "/",
       component: Home,
-      name: "home"
+      name: "home",
+      meta: {
+        keepAlive: true
+      }
     },
     {
       path: "/login",
@@ -75,6 +78,11 @@ const router = new VueRouter({
 });
 //配置路由守卫
 router.beforeEach((to, from, next) => {
+  if (to.name === "home" && from.name === "details") {
+    to.meta.keepAlive = true;
+  } else {
+    to.meta.keepAlive = false;
+  }
   const token = localStorage.getItem("token");
   const pachUrl = [
     "/user",

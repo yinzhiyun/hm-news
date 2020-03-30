@@ -22,7 +22,8 @@ import {
   Uploader,
   List,
   Tab,
-  Tabs
+  Tabs,
+  PullRefresh
 } from "vant";
 Vue.use(Toast);
 Vue.use(Dialog);
@@ -36,6 +37,7 @@ Vue.use(Uploader);
 Vue.use(List);
 Vue.use(Tab);
 Vue.use(Tabs);
+Vue.use(PullRefresh);
 
 //配置vue cropper
 import VueCropper from "vue-cropper";
