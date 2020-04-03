@@ -1,6 +1,8 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
+//导入vuex
+import store from "./store";
 //导入通用样式
 import "./styles/base.less";
 //导入万恶之源rem自动布局
@@ -52,6 +54,8 @@ axios.interceptors.response.use(function(res) {
   if (statusCode === 401 && message === "用户信息验证失败") {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    localStorage.removeItem("column");
+    localStorage.removeItem("delcolumn");
     router.push("/login");
   }
   return res;
@@ -105,5 +109,6 @@ Vue.config.productionTip = false;
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount("#app");

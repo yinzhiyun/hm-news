@@ -52,6 +52,8 @@ export default {
         .then(() => {
           localStorage.removeItem("token");
           localStorage.removeItem("userId");
+          localStorage.removeItem("column");
+          localStorage.removeItem("delcolumn");
           this.$toast.success("退出成功");
           this.$router.push("/login");
         })

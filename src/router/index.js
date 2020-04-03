@@ -1,16 +1,28 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-const Login = () => import("../pages/Login.vue");
-const Register = () => import("../pages/Register.vue");
-const User = () => import("../pages/User.vue");
-const EditUser = () => import("../pages/EditUser.vue");
-const Myconcern = () => import("../pages/Myconcern.vue");
-const Mycomments = () => import("../pages/Mycomments.vue");
-const Mycollection = () => import("../pages/Mycollection.vue");
-const Home = () => import("../pages/Home.vue");
-const Details = () => import("../pages/Details.vue");
-const Search = () => import("../pages/Search.vue");
-const Column = () => import("../pages/Column.vue");
+const Login = () =>
+  import(/* webpackChunkName: "users" */ "../pages/Login.vue");
+const Register = () =>
+  import(/* webpackChunkName: "users" */ "../pages/Register.vue");
+const User = () => import(/* webpackChunkName: "users" */ "../pages/User.vue");
+const EditUser = () =>
+  import(/* webpackChunkName: "users" */ "../pages/EditUser.vue");
+const Myconcern = () =>
+  import(/* webpackChunkName: "users" */ "../pages/Myconcern.vue");
+const Mycomments = () =>
+  import(/* webpackChunkName: "users" */ "../pages/Mycomments.vue");
+const Mycollection = () =>
+  import(/* webpackChunkName: "users" */ "../pages/Mycollection.vue");
+const Home = () => import(/* webpackChunkName: "home" */ "../pages/Home.vue");
+const Details = () =>
+  import(/* webpackChunkName: "home" */ "../pages/Details.vue");
+const Search = () =>
+  import(/* webpackChunkName: "home" */ "../pages/Search.vue");
+const Column = () =>
+  import(/* webpackChunkName: "home" */ "../pages/Column.vue");
+
+//导入store
+import store from "../store";
 
 Vue.use(VueRouter);
 
@@ -78,10 +90,12 @@ const router = new VueRouter({
 });
 //配置路由守卫
 router.beforeEach((to, from, next) => {
-  if (to.name === "home" && from.name === "details") {
-    to.meta.keepAlive = true;
-  } else {
-    to.meta.keepAlive = false;
+  if (to.name === "home") {
+    store.commit("catch", "home");
+  }
+  console.log("当前跳转的页面:" + from.name + "要跳转的页面:" + to.name);
+  if (from.name === "home" && to.name !== "details") {
+    store.commit("uncatch", "home");
   }
   const token = localStorage.getItem("token");
   const pachUrl = [

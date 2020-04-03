@@ -14,5 +14,15 @@ module.exports = {
         ]
       }
     }
+  },
+  //项目优化
+  configureWebpack: {
+    externals: {
+      vue: "Vue",
+      "vue-router": "VueRouter",
+      lodash: "_",
+      axios: "axios",
+      moment: "moment"
+    }
   }
 };
